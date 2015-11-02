@@ -10,6 +10,7 @@ if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 } else {
     echo "Possible file upload attack!\n";
 }
+
 echo 'Here is some more debugging info:';
 print_r($_FILES);
 print "</pre>";
@@ -20,6 +21,7 @@ $s3 = new Aws\S3\S3Client([
     'version' => 'latest',
     'region'  => 'us-east-1'
 ]);
+
 $bucket = uniqid("php-jrh-",false);
 #$result = $client->createBucket(array(
 #    'Bucket' => $bucket
@@ -29,6 +31,7 @@ $result = $s3->createBucket([
     'ACL' => 'public-read',
     'Bucket' => $bucket
 ]);
+
 #$client->waitUntilBucketExists(array('Bucket' => $bucket));
 #Old PHP SDK version 2
 #$key = $uploadfile;
@@ -38,6 +41,7 @@ $result = $s3->createBucket([
 #    'Key' => $key,
 #    'SourceFile' => $uploadfile 
 #));
+
 # PHP version 3
 $result = $client->putObject([
     'ACL' => 'public-read',
@@ -72,17 +76,18 @@ if (mysqli_connect_errno()) {
     exit();
 }
 /* Prepared statement, stage 1: prepare */
-if (!($stmt = $link->prepare("INSERT INTO items (id, email,phone,filename,s3rawurl,s3finishedurl,status,issubscribed) VALUES (NULL,?,?,?,?,?,?,?)"))) {
+if (!($stmt = $link->prepare("INSERT INTO items (id,username, useremail,telephone,filename,s3rawurl,s3finishedurl,status,issubscribed) VALUES (NULL,?,?,?,?,?,?,?,?)"))) {
     echo "Prepare failed: (" . $link->errno . ") " . $link->error;
 }
-$email = $_POST['useremail'];
-$phone = $_POST['phone'];
+$username = $_POST['username'];
+$useremail = $_POST['useremail'];
+$telephone = $_POST['phone'];
 $s3rawurl = $url; //  $result['ObjectURL']; from above
 $filename = basename($_FILES['userfile']['name']);
 $s3finishedurl = "none";
 $status =0;
 $issubscribed=0;
-$stmt->bind_param("sssssii",$email,$phone,$filename,$s3rawurl,$s3finishedurl,$status,$issubscribed);
+$stmt->bind_param("ssssssii",$username,$email,$phone,$filename,$s3rawurl,$s3finishedurl,$status,$issubscribed);
 if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
@@ -93,7 +98,7 @@ $link->real_query("SELECT * FROM items");
 $res = $link->use_result();
 echo "Result set order...\n";
 while ($row = $res->fetch_assoc()) {
-    echo $row['id'] . " " . $row['email']. " " . $row['phone'];
+    echo $row['id'] . " " . $row['username'] . " " . $row['useremail']. " " . $row['telephone'];
 }
 $link->close();
 //add code to detect if subscribed to SNS topic 
