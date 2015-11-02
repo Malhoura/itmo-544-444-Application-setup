@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<form name="htmlform" method="POST" action="result.php">
+<form enctype="multipart/form-data" name="htmlform" method="POST" action="result.php">
 <table width="450px">
 </tr>
  
@@ -46,7 +46,7 @@
 
 </form>
 
-<form name="htmlform" method="POST" action="gallary.php">
+<form "multipart/form-data" name="htmlform" method="POST" action="gallary.php">
 Input Email Of User for Gallary to browse 
 <tr>
  <td valign="top">
