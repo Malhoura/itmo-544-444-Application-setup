@@ -81,7 +81,7 @@ if (!($stmt = $link->prepare("INSERT INTO items (id,username, useremail,telephon
 }
 $username = $_POST['username'];
 $useremail = $_POST['useremail'];
-$telephone = $_POST['phone'];
+$telephone = $_POST['telephone'];
 $s3rawurl = $url; //  $result['ObjectURL']; from above
 $filename = basename($_FILES['userfile']['name']);
 $s3finishedurl = "none";
