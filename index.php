@@ -22,7 +22,7 @@
   <label for="email">Email Address *</label>
  </td>
  <td valign="top">
-  <input  type="text" name="emailAddress" maxlength="80" size="30">
+  <input  type="text" name="useremail" maxlength="80" size="30">
  </td>
  
 </tr>
@@ -45,6 +45,23 @@
 </table>
 
 </form>
+
+<form name="htmlform" method="POST" action="gallary.php">
+Input Email Of User for Gallary to browse 
+<tr>
+ <td valign="top">
+  <label for="email">Email Address *</label>
+ </td>
+ <td valign="top">
+  <input  type="text" name="email" maxlength="80" size="30">
+ </td>
+
+</tr> 
+<tr>
+ <td colspan="2" style="text-align:center">
+  <input type="submit" value="Load Gallary">
+ </td>
+</tr>
 
 </body>
 </html>
