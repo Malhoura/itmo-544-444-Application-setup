@@ -5,21 +5,7 @@ $rds = new Aws\Rds\RdsClient([
     'version' => 'latest',
     'region'  => 'us-east-1'
 ]);
-$result = $rds->createDBInstance([
-    'AllocatedStorage' => 10,
-    'DBInstanceClass' => 'db.t1.micro', // REQUIRED
-    'DBInstanceIdentifier' => 'mp1-malhoura', // REQUIRED
-    'DBName' => 'users',
-    'Engine' => 'MySQL', // REQUIRED
-    'EngineVersion' => '5.5.41',
-  'MasterUserPassword' => 'malhoura',
-    'MasterUsername' => 'malhoura',
-    'PubliclyAccessible' => true,
-]);
 
-print "Create RDS DB results: \n";
-$result = $rds->waitUntil('DBInstanceAvailable',['DBInstanceIdentifier' => 'mp1-malhoura',
-]);
 // Create a table 
 $result = $rds->describeDBInstances([
     'DBInstanceIdentifier' => 'mp1-malhoura',
