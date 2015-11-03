@@ -12,8 +12,8 @@ $result = $rds->createDBInstance([
     'DBName' => 'users',
     'Engine' => 'MySQL', // REQUIRED
     'EngineVersion' => '5.5.41',
-  'MasterUserPassword' => 'letmein888',
-    'MasterUsername' => 'controller',
+  'MasterUserPassword' => 'malhoura',
+    'MasterUsername' => 'malhoura',
     'PubliclyAccessible' => true,
 ]);
 
@@ -26,7 +26,7 @@ $result = $rds->describeDBInstances([
 ]);
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
 print "============\n". $endpoint . "================\n";
-$link = mysqli_connect($endpoint,"controller","letmein888","3306") or die("Error " . mysqli_error($link)); 
+$link = mysqli_connect($endpoint,"malhoura","malhoura","3306") or die("Error " . mysqli_error($link)); 
 echo "Here is the result: " . $link;
 $sql = "CREATE TABLE User 
 (
