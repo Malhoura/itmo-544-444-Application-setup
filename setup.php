@@ -28,4 +28,5 @@ date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )";
 $con->query($sql);
 
+shell-exec("chmod 600 setup.php");
 ?>
