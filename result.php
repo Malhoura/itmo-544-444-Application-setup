@@ -64,8 +64,8 @@ $s3rawurl = $url; //  $result['ObjectURL']; from above
 $filename = basename($_FILES['userfile']['name']);
 $s3finishedurl = "none";
 $status =0;
-$issubscribed=0;
-$stmt->bind_param("ssssssii",$username,$email,$phone,$filename,$s3rawurl,$s3finishedurl,$status,$issubscribed);
+$date='2009-04-30 10:09:00';
+$stmt->bind_param("ssssssis",$username,$email,$phone,$filename,$s3rawurl,$s3finishedurl,$status,$date);
 if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
