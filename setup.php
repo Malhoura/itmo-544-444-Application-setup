@@ -8,7 +8,7 @@ $rds = new Aws\Rds\RdsClient([
 
 // Create a table 
 $result = $rds->describeDBInstances([
-    'DBInstanceIdentifier' => 'mp1-malhoura',
+    'DBInstanceIdentifier' => 'malhoura-mp1',
 ]);
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
 print "============\n". $endpoint . "================\n";
