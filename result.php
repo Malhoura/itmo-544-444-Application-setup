@@ -15,6 +15,7 @@ if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
 echo 'Here is some more debugging info:';
 print_r($_FILES);
 print "</pre>";
+
 require 'vendor/autoload.php';
 $s3 = new Aws\S3\S3Client([
     'version' => 'latest',
@@ -34,11 +35,14 @@ $result = $s3->createBucket([
 $result = $s3->putObject([
     'ACL' => 'public-read',
     'Bucket' => $bucket,
-   'Key' => $uploadfile
+   'Key' => $uploadfile,
+   'ContentType' => $_FILES['userfile']['type'],
+   'Body' => fopen($uploadfile, 'r+')
 ]);  
 
 $url = $result['ObjectURL'];
 echo $url;
+
 $rds = new Aws\Rds\RdsClient([
     'version' => 'latest',
     'region'  => 'us-east-1'
@@ -58,7 +62,7 @@ if (mysqli_connect_errno()) {
     exit();
 }
 /* Prepared statement, stage 1: prepare */
-if (!($stmt = $link->prepare("INSERT INTO items (id,username, useremail,telephone,filename,s3rawurl,s3finishedurl,status,date) VALUES (NULL,?,?,?,?,?,?,?,?)"))) {
+if (!($stmt = $link->prepare("INSERT INTO User (id,username, useremail,telephone,filename,s3rawurl,s3finishedurl,status,date) VALUES (NULL,?,?,?,?,?,?,?,?)"))) {
     echo "Prepare failed: (" . $link->errno . ") " . $link->error;
 }
 $username = $_POST['username'];
@@ -76,7 +80,7 @@ if (!$stmt->execute()) {
 printf("%d Row inserted.\n", $stmt->affected_rows);
 /* explicit close recommended */
 $stmt->close();
-$link->real_query("SELECT * FROM items");
+$link->real_query("SELECT * FROM User");
 $res = $link->use_result();
 echo "Result set order...\n";
 while ($row = $res->fetch_assoc()) {
