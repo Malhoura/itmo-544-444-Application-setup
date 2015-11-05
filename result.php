@@ -36,15 +36,18 @@ $result = $s3->putObject([
     'Bucket' => $bucket,
    'Key' => $uploadfile
 ]);  
+
 $url = $result['ObjectURL'];
 echo $url;
 $rds = new Aws\Rds\RdsClient([
     'version' => 'latest',
     'region'  => 'us-east-1'
 ]);
+
 $result = $rds->describeDBInstances([
     'DBInstanceIdentifier' => 'malhoura-mp1',
 ]);
+
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
     echo "============\n". $endpoint . "================";^M
 //echo "begin database";^M
