@@ -1,6 +1,6 @@
 <?php
 // Start the session^M
-require 'vendor/autoload.php';
+require '/var/www/html/vendor/autoload.php';
 $rds = new Aws\Rds\RdsClient([
     'version' => 'latest',
     'region'  => 'us-east-1'
@@ -12,7 +12,7 @@ $result = $rds->describeDBInstances([
 ]);
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
 print "============\n". $endpoint . "================\n";
-$link = mysqli_connect($endpoint,"malhoura","malhoura","users") or die("Error " . mysqli_error($link)); 
+$link = mysqli_connect($endpoint,"malhoura","malhoura","3306") or die("Error " . mysqli_error($link)); 
 echo "Here is the result: " . $link;
 $sql = "CREATE TABLE User 
 (
@@ -24,9 +24,9 @@ raws3url VARCHAR(256),
 finisheds3url VARCHAR(256),
 filename VARCHAR(256),
 state TINYINT(3),
-date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  
+datetime TIMESTAMP  
 )";
-$con->query($sql);
+//$con->query($sql);
 
 shell-exec("chmod 600 setup.php");
 ?>
