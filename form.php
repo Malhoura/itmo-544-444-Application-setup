@@ -96,7 +96,7 @@
             <div id="form" align ='center' >
                 <h1><i>ITMD 462</i></h1>
                 <p align ='center'><span class="error">* required field.</span></p>
-                <form  method="post" action="#">
+                <form  method="post" action="result.php">
                     <label>First Name</label>
                     <input type="text" class="input-xlarge" name="firstName" value="<?php echo $firstName; ?>">
                     <span class="error"><br> <?php echo $wrongFirstName; ?></span>
