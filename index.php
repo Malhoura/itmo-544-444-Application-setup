@@ -1,67 +1,26 @@
-<?php session_start(); ?>
-<html>
-<head>
-<title>Hello PHP</title>
+d><title>Hello app</title>
+<meta charset="UTF-8">
 </head>
 <body>
 
-<form enctype="multipart/form-data" name="htmlform" method="POST" action="result.php">
-<table width="450px">
-</tr>
- 
-<tr>
- <td valign="top"">
-  <label for="username">User Name *</label>
- </td>
- <td valign="top">
-  <input  type="text" name="username" maxlength="50" size="30">
- </td>
-</tr>
-<tr>
- <td valign="top">
-  <label for="email">Email Address *</label>
- </td>
- <td valign="top">
-  <input  type="text" name="useremail" maxlength="80" size="30">
- </td>
- 
-</tr>
-<tr>
- <td valign="top">
-  <label for="telephone">Telephone Number</label>
- </td>
- <td valign="top">
-  <input  type="text" name="telephone" maxlength="30" size="30">
- </td>
-</tr>
-<tr>
- 
-</tr>
-<tr>
- <td colspan="2" style="text-align:center">
-  <input type="submit" value="Submit">   
- </td>
-</tr>
-</table>
+<!-- The data encoding type, enctype, MUST be specified as below -->
+<form enctype="multipart/form-data" action="result.php" method="POST">
+    <!-- MAX_FILE_SIZE must precede the file input field -->
+    <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
+    <!-- Name of input element determines name in $_FILES array -->
+    Send this file: <input name="userfile" type="file" accept="image/png,image/jpeg"/><br />
+Enter Email of user: <input type="email" name="useremail"><br />
+Enter Phone of user (1-XXX-XXX-XXXX): <input type="phone" name="phone">
 
+
+<input type="submit" value="Send File" />
 </form>
 
-<form "multipart/form-data" name="htmlform" method="POST" action="gallary.php">
-Input Email Of User for Gallary to browse 
-<tr>
- <td valign="top">
-  <label for="email">Email Address *</label>
- </td>
- <td valign="top">
-  <input  type="text" name="email" maxlength="80" size="30">
- </td>
-
-</tr> 
-<tr>
- <td colspan="2" style="text-align:center">
-  <input type="submit" value="Load Gallary">
- </td>
-</tr>
+<form enctype="multipart/form-data" action="gallery.php" method="POST">
+    
+Enter Email of user for gallery to browse: <input type="email" name="email">
+<input type="submit" value="Load Gallery" />
+</form>
 
 </body>
 </html>
