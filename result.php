@@ -1,40 +1,37 @@
 <?php
 echo "Hello World1";
 session_start();
-var_dump($_POST);
-if(!empty($_POST)){
 echo $_POST['useremail'];
-echo $_POST['phone'];
-}
-else
-{
-echo "post empty";
-}
+
 $uploaddir = '/tmp/';
 $uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
 print '<pre>';
+
 if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
   echo "File is valid, and was successfully uploaded.\n";
-} else {
+}
+else {
     echo "Possible file upload attack!\n";
 }
+
 echo 'Here is some more debugging info:';
 print_r($_FILES);
 print "</pre>";
   
 require 'vendor/autoload.php';
 #use Aws\S3\S3Client;
-#$client = S3Client::factory();
 $s3 = new Aws\S3\S3Client([
     'version' => 'latest',
     'region'  => 'us-east-1'
 ]);
+
 #print_r($s3);
-$bucket = uniqid("mp1Sneha",false);
+$bucket = uniqid("malhoura-php",false);
 #$result = $s3->createBucket(array(
 #    'Bucket' => $bucket
 #));
 #
+
 ## AWS PHP SDK version 3 create bucket
 $result = $s3->createBucket([
     'ACL' => 'public-read',
@@ -48,8 +45,10 @@ $result = $s3->putObject([
 'ContentType' => $_FILES['userfile']['type'],
 'Body' => fopen($uploadfile,'r+')
 ]);
+
 $url = $result['ObjectURL'];
 echo $url;
+
 $rds = new Aws\Rds\RdsClient([
     'version' => 'latest',
     'region'  => 'us-east-1'
@@ -68,46 +67,32 @@ if (mysqli_connect_errno()) {
 else {
 echo "Success";
 }
-if (!($stmt = $link->prepare("INSERT INTO MiniProject1 (uname,email,phoneforsms,raws3url,finisheds3url,jpegfilename,state) VALUES (?,?,?,?,?,?,?)"))) {
+if (!($stmt = $link->prepare("INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state,datetime) VALUES (?,?,?,?,?,?,?,?)"))) {
     echo "Prepare failed: (" . $link->errno . ") " . $link->error;
 }
-$uname="Sneha";
-$email = $_POST['useremail'];
-$phoneforsms = $_POST['phone'];
+$username=$_POST['username'];
+$useremail = $_POST['useremail'];
+$telephone = $_POST['telephone'];
 $raws3url = $url; 
 $finisheds3url = "none";
-$jpegfilename = basename($_FILES['userfile']['name']);
+$filename = basename($_FILES['userfile']['name']);
 $state=0;
-$stmt->bind_param("ssssssi",$uname,$email,$phoneforsms,$raws3url,$finisheds3url,$jpegfilename,$state);
+$datetime = 0;
+
+$stmt->bind_param("ssssssi",$username,$useremail,$telephone,$raws3url,$finisheds3url,$filename,$state,$datetime);
 if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
 printf("%d Row inserted.\n", $stmt->affected_rows);
 $stmt->close();
-$link->real_query("SELECT * FROM MiniProject1");
+
+$link->real_query("SELECT * FROM User");
 $res = $link->use_result();
+
 echo "Result set order...\n";
+
 while ($row = $res->fetch_assoc()) {
-    echo $row['id'] . " " . $row['email']. " " . $row['phoneforsms'];
+    echo $row['id'] . " " . $row['useremail']. " " . $row['telephone'];
 }
 $link->close();
 ?> 
-
-  
-
-
-
-
-##foreach ($result->getPath('DBInstances/*/Endpoint/Address') as $ep){
-##echo $ep;
-##$endpoint=$ep;
-##} 
-#
-
-#
-#/* Prepared statement, stage 1: prepare */
-#//add code to detect if subscribed to SNS topic 
-#//if not subscribed then subscribe the user and UPDATE the column in the database with a new value 0 to 1 so that then each time you don't have to resubscribe them
-#// add code to generate SQS Message with a value of the ID returned from the most recent inserted piece of work
-#//  Add code to update database to UPDATE status column to 1 (in progress)
-#?>   
