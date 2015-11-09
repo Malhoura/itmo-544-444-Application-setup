@@ -19,47 +19,47 @@ print_r($_FILES);
 print "</pre>";
   
 require 'vendor/autoload.php';
+
 #use Aws\S3\S3Client;
 $s3 = new Aws\S3\S3Client([
     'version' => 'latest',
     'region'  => 'us-east-1'
 ]);
 
-#print_r($s3);
 $bucket = uniqid("malhoura-php",false);
-#$result = $s3->createBucket(array(
-#    'Bucket' => $bucket
-#));
-#
 
 ## AWS PHP SDK version 3 create bucket
 $result = $s3->createBucket([
     'ACL' => 'public-read',
     'Bucket' => $bucket
 ]);
+
 #print_r($result);
+
 $result = $s3->putObject([
     'ACL' => 'public-read',
     'Bucket' => $bucket,
    'Key' => $uploadfile,
-'ContentType' => $_FILES['userfile']['type'],
-'Body' => fopen($uploadfile,'r+')
+   'SourceFile' => $uploadfile 
 ]);
 
 $url = $result['ObjectURL'];
 echo $url;
 
+
 $rds = new Aws\Rds\RdsClient([
     'version' => 'latest',
     'region'  => 'us-east-1'
 ]);
+
 $result = $rds->describeDBInstances(array(
-    'DBInstanceIdentifier' => 'MP1'
+    'DBInstanceIdentifier' => 'malhoura-mp1'
    
 ));
+
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
     echo "============\n". $endpoint . "================";
-$link = mysqli_connect($endpoint,"testconnection1","testconnection1","Project1");
+$link = mysqli_connect($endpoint,"malhoura","malhoura","users");
 if (mysqli_connect_errno()) {
     printf("Connect failed: %s\n", mysqli_connect_error());
     exit();
@@ -67,9 +67,11 @@ if (mysqli_connect_errno()) {
 else {
 echo "Success";
 }
+
 if (!($stmt = $link->prepare("INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state,datetime) VALUES (?,?,?,?,?,?,?,?)"))) {
     echo "Prepare failed: (" . $link->errno . ") " . $link->error;
 }
+
 $username=$_POST['username'];
 $useremail = $_POST['useremail'];
 $telephone = $_POST['telephone'];
@@ -83,6 +85,7 @@ $stmt->bind_param("ssssssi",$username,$useremail,$telephone,$raws3url,$finisheds
 if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
+
 printf("%d Row inserted.\n", $stmt->affected_rows);
 $stmt->close();
 
