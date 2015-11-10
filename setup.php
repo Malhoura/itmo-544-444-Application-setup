@@ -12,7 +12,7 @@ $result = $rds->describeDBInstances([
 ]);
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
 print "============\n". $endpoint . "================\n";
-$link = mysqli_connect($endpoint,"malhoura","malhoura","3306") or die("Error " . mysqli_error($link)); 
+$link = mysqli_connect($endpoint,"malhoura","malhoura","users") or die("Error " . mysqli_error($link)); 
 echo "Here is the result: " . $link;
 $sql = "CREATE TABLE User 
 (
@@ -26,7 +26,7 @@ filename VARCHAR(256),
 state TINYINT(3),
 datetime TIMESTAMP  
 )";
-//$con->query($sql);
+$con->query($sql);
 
 shell-exec("chmod 600 setup.php");
 ?>
