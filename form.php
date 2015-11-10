@@ -62,16 +62,15 @@ if (empty($_POST["telephone"])) {
                 }
             }
 	
-}        
+      
 ?>
         
 	<?php
         if (($_SERVER["REQUEST_METHOD"] == "GET") || ($_SERVER["REQUEST_METHOD"] == "POST" && (empty($username) || empty($useremail) || empty($telephone)))) {
             ?>
             <div id="form" align ='center' >
-                <h1><i>ITMD 462</i></h1>
                 <p align ='center'><span class="error">* required field.</span></p>
-                <form  method="post" action="result.php">
+                <form  method="post" action="#">
                     <label>User Name</label>
                     <input type="text" class="input-xlarge" name="username" value="<?php echo $username; ?>">
                     <span class="error"><br> <?php echo $wrongusername; ?></span>
@@ -82,8 +81,8 @@ if (empty($_POST["telephone"])) {
                     <br>
 		<label>Telephone Number</label>
                     <input type="number" class="input-xlarge" name="telephone" value="<?php echo $telephone; ?>">
-                    <span class="error"><br> <?php echo $wrongtelephone; ?></span>^M
-                    <br>^M
+                    <span class="error"><br> <?php echo $wrongtelephone; ?></span>
+                    <br>
 
                         <input type="submit" name="submit" value="Submit">
                 </form>
