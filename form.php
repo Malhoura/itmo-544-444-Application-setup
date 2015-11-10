@@ -67,7 +67,7 @@ if (empty($_POST["telephone"])) {
             ?>
             <div id="form" align ='center' >
                 <p align ='center'><span class="error">* required field.</span></p>
-                <form  method="post" action="#">
+                <form  method="post" action="result.php">
                     <label>User Name</label>
                     <input type="text" class="input-xlarge" name="username" value="<?php echo $username; ?>">
                     <span class="error"><br> <?php echo $wrongusername; ?></span>
