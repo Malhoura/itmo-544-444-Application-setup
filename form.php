@@ -47,9 +47,6 @@
            //validate the user input
             else {
                 $useremail = $_POST["emailAddress"];
-                // check if the emailaddress is in valid format
-                if (!filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
-                    $wronguseremail = "Invalid email format";
                 }
             }
 	
