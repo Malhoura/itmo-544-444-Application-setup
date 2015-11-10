@@ -81,7 +81,7 @@ $filename = basename($_FILES['userfile']['name']);
 $state=0;
 $datetime = 0;
 
-$stmt->bind_param("ssssssi",$username,$useremail,$telephone,$raws3url,$finisheds3url,$filename,$state,$datetime);
+$stmt->bind_param("ssssssii",$username,$useremail,$telephone,$raws3url,$finisheds3url,$filename,$state,$datetime);
 if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
