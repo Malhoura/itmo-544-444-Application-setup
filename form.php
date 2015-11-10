@@ -94,9 +94,9 @@ if (empty($_POST["telephone"])) {
                 <?php
             }
                     //if there's no errors
-            elseif (!$wrongusername && !$wronguseremail !$wrongtelephone) {
+            elseif (!$wrongusername && !$wronguseremail && !$wrongtelephone) {
                 //if the required fields are not empty
-                if (!empty($_POST["username"]) && !empty($_POST["useremail"])) {
+                if (!empty($_POST["username"]) && !empty($_POST["useremail"]) && !empty($_POST["telephone"])) {
                     echo "<h1 style=\"font-style: italic;\">Your Information:</h1>";
                     echo"<b><p>User Name: </P></b>";
                     echo $username;
@@ -104,7 +104,6 @@ if (empty($_POST["telephone"])) {
                     echo"<b><p>Email Address: </P></b>";
                     echo $useremail;
                     echo "<br>";
-
 
                     print "</p></div>";
 
