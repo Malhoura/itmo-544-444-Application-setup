@@ -33,7 +33,7 @@ $res = $link->use_result();
 echo "Result set order...\n";
 while ($row = $res->fetch_assoc()) {
     echo "<img src =\" " . $row['raws3url'] . "\" /><img src =\"" .$row['finisheds3url'] . "\"/>";
-echo $row['id'] . "Email: " . $row['useremaail'];
+echo $row['id'] . "Email: " . $row['useremail'];
 }
 $link->close();
 ?>
