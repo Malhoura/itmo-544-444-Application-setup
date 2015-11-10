@@ -9,7 +9,7 @@
 
         </style>
     </head>
-    <body> 
+    <body>
         <div class="btn-group" role="group" aria-label="...">
             <button type="button" class="btn btn-default"><a href="index.php">Home</a></button>
         </div>
@@ -18,8 +18,11 @@
         // defining variables 
         $wrongusername = "";
         $wronguseremail = "";
+	$wrongtelephone = "";
         $username = "";
         $useremail = "";
+	$telephone = "";
+
             
 	//form validation
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -41,7 +44,7 @@
 
                 $wronguseremail = "Email is required";
             }
-            //validate the user input
+           //validate the user input
             else {
                 $useremail = $_POST["emailAddress"];
                 // check if the emailaddress is in valid format
@@ -49,13 +52,21 @@
                     $wronguseremail = "Invalid email format";
                 }
             }
+	
+if (empty($_POST["telephone"])) {
 
-
-        }
-        ?>
+                $wrongtelephone = "Telephone is required";
+            }
+            else {
+                $telephone = $_POST["telephone"];
+                }
+            }
+	
+}        
+?>
         
 	<?php
-        if (($_SERVER["REQUEST_METHOD"] == "GET") || ($_SERVER["REQUEST_METHOD"] == "POST" && (empty($username) || empty($useremail)))) {
+        if (($_SERVER["REQUEST_METHOD"] == "GET") || ($_SERVER["REQUEST_METHOD"] == "POST" && (empty($username) || empty($useremail) || empty($telephone)))) {
             ?>
             <div id="form" align ='center' >
                 <h1><i>ITMD 462</i></h1>
@@ -69,6 +80,10 @@
                     <input type="text" class="input-xlarge" name="useremail" value="<?php echo $useremail; ?>">
                     <span class="error"><br> <?php echo $wronguseremail; ?></span>
                     <br>
+		<label>Telephone Number</label>
+                    <input type="number" class="input-xlarge" name="telephone" value="<?php echo $telephone; ?>">
+                    <span class="error"><br> <?php echo $wrongtelephone; ?></span>^M
+                    <br>^M
 
                         <input type="submit" name="submit" value="Submit">
                 </form>
@@ -79,7 +94,7 @@
                 <?php
             }
                     //if there's no errors
-            elseif (!$wrongusername && !$wronguseremail) {
+            elseif (!$wrongusername && !$wronguseremail !$wrongtelephone) {
                 //if the required fields are not empty
                 if (!empty($_POST["username"]) && !empty($_POST["useremail"])) {
                     echo "<h1 style=\"font-style: italic;\">Your Information:</h1>";
