@@ -49,7 +49,6 @@
             else {
                 $useremail = $_POST["emailAddress"];
                 }
-            }
 	
 if (empty($_POST["telephone"])) {
 
@@ -58,7 +57,9 @@ if (empty($_POST["telephone"])) {
             else {
                 $telephone = $_POST["telephone"];
                 }
-            }
+       
+   }
+
 	
       
 ?>
