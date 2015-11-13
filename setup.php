@@ -12,7 +12,7 @@ $result = $rds->describeDBInstances([
 ]);
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
 print "============\n". $endpoint . "================\n";
-$link = mysqli_connect("malhoura-mp1.cy1p8yogxsmb.us-east-1.rds.amazonaws.com","malhoura","malhoura","users") or die("Error " . mysqli_error($link)); 
+$link = mysqli_connect($endpoint,"malhoura","malhoura","users") or die("Error " . mysqli_error($link)); 
 echo "Here is the result: " . $link;
 
 
