@@ -4,6 +4,7 @@ session_start();
 var_dump($_POST);
 
 if(!empty($_POST)){
+echo $_POST['username'];
 echo $_POST['useremail'];
 echo $_POST['telephone'];
 }
@@ -104,7 +105,7 @@ $res = $link->use_result();
 echo "Result set order...\n";
 
 while ($row = $res->fetch_assoc()) {
-    echo $row['id'] . " " . $row['useremail']. " " . $row['telephone'];
+    echo $row['id'] . " " . $row['username'] . " " . $row['useremail']. " " . $row['telephone'];
 }
 $link->close();
 ?> 
