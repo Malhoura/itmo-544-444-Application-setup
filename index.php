@@ -11,6 +11,7 @@
     <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
     <!-- Name of input element determines name in $_FILES array -->
     Send this file: <input name="userfile" type="file"/><br />
+Enter User Name: <input type="text" name="username"><br />
 Enter Email of user: <input type="email" name="useremail"><br />
 Enter Phone of user (1-XXX-XXX-XXXX): <input type="phone" name="telephone">
 
