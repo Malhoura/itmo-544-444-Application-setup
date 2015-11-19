@@ -69,7 +69,7 @@ $result = $rds->describeDBInstances(array(
 
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
     echo "============\n". $endpoint . "================";
-$link = mysqli_connect("malhoura-mp1.cy1p8yogxsmb.us-east-1.rds.amazonaws.com","malhoura","malhoura","users");
+$link = mysqli_connect($endpoint,"malhoura","malhoura","users",3306) or die("Error" . mysqli_error($link));
 if (mysqli_connect_errno()) {
     printf("Connect failed: %s\n", mysqli_connect_error());
     exit();
