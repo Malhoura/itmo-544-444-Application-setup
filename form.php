@@ -19,10 +19,12 @@
         // defining variables 
         $wrongusername = "";
         $wronguseremail = "";
+	$wronguserfile = "";
 	$wrongtelephone = "";
         $username = "";
         $useremail = "";
 	$telephone = "";
+	$userfile= "";
 
             
 	//form validation
@@ -58,28 +60,46 @@ if (empty($_POST["telephone"])) {
                 $telephone = $_POST["telephone"];
                 }
        
-   }
+	if (empty($_POST["userfile"])) {
+
+                $wronguserfile = "You Didn't Choose a file!!!";
+            }
+            else {
+                $userfile = $_POST["userfile"];
+                }
+   
+
+}
 
 	
       
 ?>
         
 	<?php
-        if (($_SERVER["REQUEST_METHOD"] == "GET") || ($_SERVER["REQUEST_METHOD"] == "POST" && (empty($username) || empty($useremail) || empty($telephone)))) {
+        if (($_SERVER["REQUEST_METHOD"] == "GET") || ($_SERVER["REQUEST_METHOD"] == "POST" && (empty($username) || empty($useremail) || empty($telephone) || empty($userfile)))) {
             ?>
             <div id="form" align ='center' >
                 <p align ='center'><span class="error">* required field.</span></p>
-                <form  method="post" action="result.php">
+		<form enctype="multipart/form-data" action="result.php" method="POST">
+
+
+	        <!-- MAX_FILE_SIZE must precede the file input field -->
+		  <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
+   		 <!-- Name of input element determines name in $_FILES array -->
+   		<label>Send this file:</label>	
+		 <input name="userfile" class="input-xlarge" type="file"/><br />
+
+
                     <label>User Name</label>
-                    <input type="text" class="input-xlarge" name="username" value="<?php echo $username; ?>">
+             <input type="text" class="input-xlarge" name="username" value="<?php echo $username; ?>">
                     <span class="error"><br> <?php echo $wrongusername; ?></span>
                     <br>
-                    <label>Email Address</label>
-                    <input type="text" class="input-xlarge" name="useremail" value="<?php echo $useremail; ?>">
+                <label>Email Address</label>
+           <input type="text" class="input-xlarge" name="useremail" value="<?php echo $useremail; ?>">
                     <span class="error"><br> <?php echo $wronguseremail; ?></span>
                     <br>
 		<label>Telephone Number</label>
-                    <input type="number" class="input-xlarge" name="telephone" value="<?php echo $telephone; ?>">
+         <input type="number" class="input-xlarge" name="telephone" value="<?php echo $telephone; ?>">
                     <span class="error"><br> <?php echo $wrongtelephone; ?></span>
                     <br>
 
@@ -88,13 +108,19 @@ if (empty($_POST["telephone"])) {
             </div>
 
             <hr>
+		<form enctype="multipart/form-data" action="gallery.php" method="POST">
+
+		Enter Email of user for gallery to browse: <input type="email" name="useremail">
+		<input type="submit" value="Load Gallery" />
+		</form>
+		<hr>
             <div id='output' align='center'>
                 <?php
             }
                     //if there's no errors
-            elseif (!$wrongusername && !$wronguseremail && !$wrongtelephone) {
+            elseif (!$wrongusername && !$wronguseremail && !$wrongtelephone && !$wronguserfile) {
                 //if the required fields are not empty
-                if (!empty($_POST["username"]) && !empty($_POST["useremail"]) && !empty($_POST["telephone"])) {
+       if (!empty($_POST["username"]) && !empty($_POST["useremail"]) && !empty($_POST["telephone"]) &&!empty($_POST["userfile"])) {
                     echo "<h1 style=\"font-style: italic;\">Your Information:</h1>";
                     echo"<b><p>User Name: </P></b>";
                     echo $username;
