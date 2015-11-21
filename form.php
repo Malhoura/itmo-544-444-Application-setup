@@ -60,15 +60,6 @@ if (empty($_POST["telephone"])) {
                 $telephone = $_POST["telephone"];
                 }
        
-	if (empty($_POST["userfile"])) {
-
-                $wronguserfile = "You Didn't Choose a file!!!";
-            }
-            else {
-                $userfile = $_POST["userfile"];
-                }
-   
-
 }
 
 	
@@ -118,7 +109,7 @@ if (empty($_POST["telephone"])) {
                 <?php
             }
                     //if there's no errors
-            elseif (!$wrongusername && !$wronguseremail && !$wrongtelephone && !$wronguserfile) {
+            elseif (!$wrongusername && !$wronguseremail && !$wrongtelephone) {
                 //if the required fields are not empty
        if (!empty($_POST["username"]) && !empty($_POST["useremail"]) && !empty($_POST["telephone"])) {
                     echo "<h1 style=\"font-style: italic;\">Your Information:</h1>";

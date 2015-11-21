@@ -10,14 +10,17 @@ $rds = new Aws\Rds\RdsClient([
 $result = $rds->describeDBInstances([
     'DBInstanceIdentifier' => 'malhoura-mp1',
 ]);
+
+$rds->waituntil('DBInstanceAvailable',[DBInstanceIdentifier' => 'malhoura-mp1,]);
+
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
 print "============\n". $endpoint . "================\n";
-$link = mysqli_connect($endpoint,"malhoura","malhoura","users") or die("Error " . mysqli_error($link)); 
+$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb") or die("Error " . mysqli_error($link)); 
 echo "Here is the result: " . $link;
 
 
 
-$sql = 'CREATE TABLE IF NOT EXISTS Data  
+$sql = 'CREATE TABLE IF NOT EXISTS User  
 (
 ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 username VARCHAR(20),

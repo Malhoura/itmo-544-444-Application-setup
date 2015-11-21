@@ -1,18 +1,6 @@
 <?php
 echo "Hello World1";
 session_start();
-#var_dump($_POST);
-
-#if(!empty($_POST)){
-echo $_POST['username'];
-echo $_POST['useremail'];
-echo $_POST['telephone'];
-#}
-#else
-#{
-#echo "post empty";
-#}
-
 
 $username = $_POST['username'];
 $useremail= $_POST['useremail'];
@@ -82,7 +70,7 @@ $result = $rds->describeDBInstances(array(
 
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
     echo "============\n". $endpoint . "================";
-$link = mysqli_connect($endpoint,"malhoura","malhoura","users",3306) or die("Error" . mysql_error($link));
+$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb",3306) or die("Error" . mysql_error($link));
 
 if (mysqli_connect_errno()) { 
     printf("Connect failed: %s\n", mysqli_connect_error()); 
