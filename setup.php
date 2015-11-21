@@ -15,7 +15,7 @@ $rds->waituntil('DBInstanceAvailable',[DBInstanceIdentifier' => 'malhoura-mp1,])
 
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
 print "============\n". $endpoint . "================\n";
-$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb") or die("Error " . mysqli_error($link)); 
+$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb",3306) or die("Error " . mysqli_error($link)); 
 echo "Here is the result: " . $link;
 
 

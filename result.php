@@ -2,9 +2,20 @@
 echo "Hello World1";
 session_start();
 
-$username = $_POST['username'];
-$useremail= $_POST['useremail'];
-$telephone = $_POST['telephone'];
+var_dump($_POST);
+if(!empty($_POST)){
+echo $_POST['useremail'];
+echo $_POST['telephone'];
+echo $_POST['username'];
+$_SESSION['username']=$_POST['username'];
+$_SESSION['telephone']=$_POST['telephone'];
+$_SESSION['useremail']=$_POST['useremail'];
+}
+else
+{
+echo "post empty";
+}
+
 $allowed = array('gif', 'png', 'jpg');
 $filename = $_FILES['userfile']['name'];
 
@@ -45,7 +56,6 @@ $s3->waitUntil('BucketExists',[
 	'Bucket' => $bucket
 ]);
 
-#print_r($result);
 
 $result = $s3->putObject([
     'ACL' => 'public-read',
@@ -70,7 +80,7 @@ $result = $rds->describeDBInstances(array(
 
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
     echo "============\n". $endpoint . "================";
-$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb",3306) or die("Error" . mysql_error($link));
+$link = mysqli_connect($endpoint,"malhoura","malhoura","users") or die("Error" . mysql_error($link));
 
 if (mysqli_connect_errno()) { 
     printf("Connect failed: %s\n", mysqli_connect_error()); 
