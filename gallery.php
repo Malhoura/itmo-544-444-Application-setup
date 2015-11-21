@@ -29,13 +29,16 @@ else {
 echo "Success";
 }
 $link->real_query("SELECT * FROM User WHERE useremail = '$useremail'");
-$res = $link->use_result();
 echo "Result set order...\n";
-while ($row = $res->fetch_assoc()) {
-    echo "<img src =\" " . $row['raws3url'] . "\" /><img src =\"" .$row['finisheds3url'] . "\"/>";
-echo $row['id'] . "Email: " . $row['useremail'];
-}
-$link->close();
+
+if ($result = $link->use_result()) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<img src =\" " . $row['raws3url'] . "\" height='200' width='200' />";
+            }
+            $result->close();
+        }
+session_destroy();
+
 ?>
 
 </div>
