@@ -1,6 +1,6 @@
 <?php
 // Start the session
-require 'vendor/autoload.php';
+require '/var/www/html/vendor/autoload.php';
 $rds = new Aws\Rds\RdsClient([
     'version' => 'latest',
     'region'  => 'us-east-1'
@@ -17,7 +17,7 @@ echo "Here is the result: " . $link;
 
 
 
-$create_table = 'CREATE TABLE IF NOT EXISTS User  
+$sql = 'CREATE TABLE IF NOT EXISTS Data  
 (
 ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 username VARCHAR(20),
@@ -27,18 +27,10 @@ raws3url VARCHAR(256),
 finisheds3url VARCHAR(256),
 filename VARCHAR(256),
 state TINYINT(3),
-datetime TIMESTAMP
+datetime VARCHAR 
 
 )';
-$create_tbl = $link->query($create_table);
-if ($create_table) {
-	echo "Table is created.";
-}
-else {
-        echo "error!!";  
-}
-$link->close();
-
+$link->query($sql);
 shell-exec("chmod 600 setup.php");
 
 ?>
