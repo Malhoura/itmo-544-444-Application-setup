@@ -1,17 +1,26 @@
 <?php
 echo "Hello World1";
 session_start();
-var_dump($_POST);
+#var_dump($_POST);
 
-if(!empty($_POST)){
+#if(!empty($_POST)){
 echo $_POST['username'];
 echo $_POST['useremail'];
 echo $_POST['telephone'];
-}
-else
-{
-echo "post empty";
-}
+#}
+#else
+#{
+#echo "post empty";
+#}
+
+
+$username = $_POST['username'];
+$useremail= $_POST['useremail'];
+$telephone = $_POST['telephone'];
+$allowed = array('gif', 'png', 'jpg');
+$filename = $_FILES['userfile']['name'];
+
+date_default_timezone_set('America/Chicago');
 
 $uploaddir = '/tmp/';
 $uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
@@ -38,10 +47,14 @@ $s3 = new Aws\S3\S3Client([
 
 $bucket = uniqid("malhoura-php",false);
 
-## AWS PHP SDK version 3 create bucket
+# AWS PHP SDK version 3 create bucket
 $result = $s3->createBucket([
     'ACL' => 'public-read',
     'Bucket' => $bucket
+]);
+
+$s3->waitUntil('BucketExists',[
+	'Bucket' => $bucket
 ]);
 
 #print_r($result);
@@ -49,7 +62,7 @@ $result = $s3->createBucket([
 $result = $s3->putObject([
     'ACL' => 'public-read',
     'Bucket' => $bucket,
-   'Key' => $uploadfile,
+   'Key' => $bucket,
    'SourceFile' => $uploadfile 
 ]);
 
@@ -69,7 +82,8 @@ $result = $rds->describeDBInstances(array(
 
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
     echo "============\n". $endpoint . "================";
-$link = mysqli_connect($endpoint,"malhoura","malhoura","users",3306);
+$link = mysqli_connect($endpoint,"malhoura","malhoura","users",3306) or die("Error . mysql_error($link));
+
 if (mysqli_connect_errno()) {
     printf("Connect failed: %s\n", mysqli_connect_error());
     exit();
@@ -84,14 +98,15 @@ if (!($stmt = $link->prepare("INSERT INTO User (username,useremail,telephone,raw
 
 $username=$_POST['username'];
 $useremail = $_POST['useremail'];
+$_SESSION["useremail"]=$useremail;
 $telephone = $_POST['telephone'];
 $raws3url = $url; 
-$finisheds3url = "none";
 $filename = basename($_FILES['userfile']['name']);
+$finisheds3url = "none";
 $state=0;
-$datetime = 0;
+$datetime = date("d M Y - h:i:s A");
 
-$stmt->bind_param("ssssssii",$username,$useremail,$telephone,$raws3url,$finisheds3url,$filename,$state,$datetime);
+$stmt->bind_param("ssssssis",$username,$useremail,$telephone,$raws3url,$finisheds3url,$filename,$state,$datetime);
 if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
@@ -108,4 +123,5 @@ while ($row = $res->fetch_assoc()) {
     echo $row['id'] . " " . $row['username'] . " " . $row['useremail']. " " . $row['telephone'];
 }
 $link->close();
+header("Location: gallery.php");
 ?> 
