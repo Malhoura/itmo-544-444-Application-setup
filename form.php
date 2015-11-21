@@ -76,7 +76,7 @@ if (empty($_POST["telephone"])) {
 ?>
         
 	<?php
-        if (($_SERVER["REQUEST_METHOD"] == "GET") || ($_SERVER["REQUEST_METHOD"] == "POST" && (empty($username) || empty($useremail) || empty($telephone) || empty($userfile)))) {
+        if (($_SERVER["REQUEST_METHOD"] == "GET") || ($_SERVER["REQUEST_METHOD"] == "POST" && (empty($username) || empty($useremail) || empty($telephone)))) {
             ?>
             <div id="form" align ='center' >
                 <p align ='center'><span class="error">* required field.</span></p>
@@ -120,7 +120,7 @@ if (empty($_POST["telephone"])) {
                     //if there's no errors
             elseif (!$wrongusername && !$wronguseremail && !$wrongtelephone && !$wronguserfile) {
                 //if the required fields are not empty
-       if (!empty($_POST["username"]) && !empty($_POST["useremail"]) && !empty($_POST["telephone"]) &&!empty($_POST["userfile"])) {
+       if (!empty($_POST["username"]) && !empty($_POST["useremail"]) && !empty($_POST["telephone"])) {
                     echo "<h1 style=\"font-style: italic;\">Your Information:</h1>";
                     echo"<b><p>User Name: </P></b>";
                     echo $username;
