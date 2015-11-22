@@ -54,9 +54,8 @@ $result = $s3->createBucket([
 $result = $s3->putObject([
     'ACL' => 'public-read',
     'Bucket' => $bucket,
-   'Key' => $uploadfile,
-   'ContentType=> $_FILES['userfile']['type'],
-   'Body' => fopen($uploadfile,'r+') 
+   'Key' => $bucket,
+   'SourceFile' => $uploadfile 
 ]);
 
 $url = $result['ObjectURL'];
