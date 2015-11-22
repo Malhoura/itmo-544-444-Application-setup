@@ -5,9 +5,12 @@
 <div>
 <?php
 session_start();
+
 $useremail = $_POST["useremail"];
 echo $useremail;
+
 require 'vendor/autoload.php';
+
 $rds = new Aws\Rds\RdsClient([
     'version' => 'latest',
     'region'  => 'us-east-1'

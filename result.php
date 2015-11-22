@@ -16,8 +16,6 @@ else
 echo "post empty";
 }
 
-$allowed = array('gif', 'png', 'jpg');
-$filename = $_FILES['userfile']['name'];
 
 date_default_timezone_set('America/Chicago');
 
@@ -80,7 +78,7 @@ $result = $rds->describeDBInstances(array(
 
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
     echo "============\n". $endpoint . "================";
-$link = mysqli_connect($endpoint,"malhoura","malhoura","users") or die("Error" . mysql_error($link));
+$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb") or die("Error" . mysql_error($link));
 
 if (mysqli_connect_errno()) { 
     printf("Connect failed: %s\n", mysqli_connect_error()); 
@@ -111,6 +109,15 @@ if (!$stmt->execute()) {
 
 printf("%d Row inserted.\n", $stmt->affected_rows);
 $stmt->close();
+
+$publish = $result->publish(array(
+    'TopicArn' => $topicARN,
+    // Message is required
+    'Subject' => 'Test',
+    'Message' => 'test msg',
+    
+    
+));
 
 $link->real_query("SELECT * FROM User");
 $res = $link->use_result();
