@@ -28,7 +28,6 @@
 
             
 	//form validation
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             //if users don't enter their firstname
             if (empty($_POST["username"])) {
@@ -60,7 +59,6 @@ if (empty($_POST["telephone"])) {
                 $telephone = $_POST["telephone"];
                 }
        
-}
 
 	
       
