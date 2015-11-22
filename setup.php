@@ -15,7 +15,10 @@ $result = $rds->describeDBInstances(array(
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
 print "============\n". $endpoint . "================\n";
 $link = new mysqli($endpoint,"malhoura","malhoura","malhouradb",3306) or die("Error " . mysqli_error($link)); 
-echo "Here is the result: " . $link;
+
+while ($row = $result->fetch_assoc()) {
+echo "Here is the result: " . $link;    
+}
 
 $sql = "DROP TABLE IF EXISTS User";
 if(!mysqli_query($link, $sql)) {
