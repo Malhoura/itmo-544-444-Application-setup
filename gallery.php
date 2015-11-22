@@ -17,7 +17,7 @@ $rds = new Aws\Rds\RdsClient([
 ]);
 
 $result = $rds->describeDBInstances(array(
-    'DBInstanceIdentifier' => 'malhorua-mp1'
+    'DBInstanceIdentifier' => 'malhoura-mp1'
    
 ));
 
@@ -31,7 +31,7 @@ if (mysqli_connect_errno()) {
 else {
 echo "Success";
 }
-$link->real_query("SELECT * FROM User WHERE useremail = '$useremail'");
+$link->real_query("SELECT * FROM User");
 echo "Result set order...\n";
 
 if ($result = $link->use_result()) {
