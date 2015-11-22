@@ -36,7 +36,6 @@ print "</pre>";
   
 require 'vendor/autoload.php';
 
-#use Aws\S3\S3Client;
 $s3 = new Aws\S3\S3Client([
     'version' => 'latest',
     'region'  => 'us-east-1'
@@ -58,8 +57,9 @@ $s3->waitUntil('BucketExists',[
 $result = $s3->putObject([
     'ACL' => 'public-read',
     'Bucket' => $bucket,
-   'Key' => $bucket,
-   'SourceFile' => $uploadfile 
+   'Key' => $uploadfile,
+   'ContentType' => $FILES['userfile']['type'],
+   'Body' =>fopen($uploadfile)
 ]);
 
 $url = $result['ObjectURL'];
@@ -88,21 +88,23 @@ else {
 echo "Success"; 
 } 
 
-if (!($stmt = $link->prepare("INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state,datetime) VALUES (?,?,?,?,?,?,?,?)"))) {
+
+
+
+
+if (!($stmt = $link->prepare("INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state) VALUES (?,?,?,?,?,?,?)"))) {
     echo "Prepare failed: (" . $link->errno . ") " . $link->error;
 }
 
 $username=$_POST['username'];
 $useremail = $_POST['useremail'];
-$_SESSION["useremail"]=$useremail;
 $telephone = $_POST['telephone'];
 $raws3url = $url; 
 $filename = basename($_FILES['userfile']['name']);
 $finisheds3url = "none";
 $state=0;
-$datetime = date("d M Y - h:i:s A");
 
-$stmt->bind_param("ssssssis",$username,$useremail,$telephone,$raws3url,$finisheds3url,$filename,$state,$datetime);
+$stmt->bind_param("ssssssi",$username,$useremail,$telephone,$raws3url,$finisheds3url,$filename,$state);
 if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
@@ -114,7 +116,7 @@ $publish = $result->publish(array(
     'TopicArn' => $topicARN,
     // Message is required
     'Subject' => 'Test',
-    'Message' => 'test msg',
+    'Message' => 'Image Uploaded',
     
     
 ));
