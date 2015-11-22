@@ -49,17 +49,14 @@ $result = $s3->createBucket([
     'Bucket' => $bucket
 ]);
 
-$s3->waitUntil('BucketExists',[
-	'Bucket' => $bucket
-]);
 
 
 $result = $s3->putObject([
     'ACL' => 'public-read',
     'Bucket' => $bucket,
    'Key' => $uploadfile,
-   'ContentType' => $FILES['userfile']['type'],
-   'Body' =>fopen($uploadfile)
+   'ContentType=> $_FILES['userfile']['type'],
+   'Body' => fopen($uploadfile,'r+') 
 ]);
 
 $url = $result['ObjectURL'];
@@ -88,16 +85,13 @@ else {
 echo "Success"; 
 } 
 
-
-
-
-
 if (!($stmt = $link->prepare("INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state) VALUES (?,?,?,?,?,?,?)"))) {
     echo "Prepare failed: (" . $link->errno . ") " . $link->error;
 }
 
 $username=$_POST['username'];
 $useremail = $_POST['useremail'];
+$_SESSION["useremail"]=$useremail;
 $telephone = $_POST['telephone'];
 $raws3url = $url; 
 $filename = basename($_FILES['userfile']['name']);
