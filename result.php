@@ -84,6 +84,23 @@ else {
 echo "Success"; 
 } 
 
+$sns = new Aws\Sns\SnsClient([
+	'version' => 'latest'
+	'region' =>  'us-east-1'
+]);
+
+$result = $sns->listTopics(arra(
+
+));
+
+foreach($result['Topics'] as $key => $value){
+
+if (preg_match("/mp2/", $result['Topics'][$key]['TopicArn])){
+$topicArn = $result['Topics'][$key]['TopicArn'];
+}
+}
+
+
 if (!($stmt = $link->prepare("INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state) VALUES (?,?,?,?,?,?,?)"))) {
     echo "Prepare failed: (" . $link->errno . ") " . $link->error;
 }
@@ -109,11 +126,19 @@ $stmt->close();
 $link->real_query("SELECT * FROM User");
 $res = $link->use_result();
 
+$publish = $sns->publish(array(
+	'TopicArn' => $topicARN,
+	'Subject' => 'Image upload notification',
+	'Message' => 'Image Uploaded'
+));
+
 echo "Result set order...\n";
 
 while ($row = $res->fetch_assoc()) {
     echo $row['id'] . " " . $row['username'] . " " . $row['useremail']. " " . $row['telephone'];
 }
 $link->close();
-header("Location: gallery.php");
+
+$url = "gallery.php";
+header('Location: '. $url, true);
 ?> 
