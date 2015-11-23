@@ -105,14 +105,6 @@ if (!$stmt->execute()) {
 printf("%d Row inserted.\n", $stmt->affected_rows);
 $stmt->close();
 
-$publish = $result->publish(array(
-    'TopicArn' => $topicARN,
-    // Message is required
-    'Subject' => 'Test',
-    'Message' => 'Image Uploaded',
-    
-    
-));
 
 $link->real_query("SELECT * FROM User");
 $res = $link->use_result();
