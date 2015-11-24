@@ -17,7 +17,6 @@ echo "post empty";
 }
 
 
-date_default_timezone_set('America/Chicago');
 
 $uploaddir = '/tmp/';
 $uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
@@ -49,7 +48,9 @@ $result = $s3->createBucket([
     'Bucket' => $bucket
 ]);
 
-
+$s3->waitUntil('BucketExists',[
+	'Bucket' => $bucket
+]);
 
 $result = $s3->putObject([
     'ACL' => 'public-read',
@@ -74,7 +75,7 @@ $result = $rds->describeDBInstances(array(
 
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
     echo "============\n". $endpoint . "================";
-$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb") or die("Error" . mysql_error($link));
+$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb",3306) or die("Error" . mysql_error($link));
 
 if (mysqli_connect_errno()) { 
     printf("Connect failed: %s\n", mysqli_connect_error()); 
@@ -89,14 +90,16 @@ $sns = new Aws\Sns\SnsClient([
 	'region' =>  'us-east-1'
 ]);
 
-$result = $sns->listTopics(arra(
+$snsresult = $sns->listTopics(arra(
 
 ));
 
-foreach($result['Topics'] as $key => $value){
+foreach($snsresult['Topics'] as $key => $value){
 
 if (preg_match("/mp2/", $result['Topics'][$key]['TopicArn])){
-$topicArn = $result['Topics'][$key]['TopicArn'];
+$topicARN = $snsresult['Topics'][$key]['TopicArn'];
+echo"This is my TopicARN: ";
+echo $topicARN;
 }
 }
 
@@ -107,7 +110,6 @@ if (!($stmt = $link->prepare("INSERT INTO User (username,useremail,telephone,raw
 
 $username=$_POST['username'];
 $useremail = $_POST['useremail'];
-$_SESSION["useremail"]=$useremail;
 $telephone = $_POST['telephone'];
 $raws3url = $url; 
 $filename = basename($_FILES['userfile']['name']);
