@@ -86,7 +86,7 @@ echo "Success";
 } 
 
 $sns = new Aws\Sns\SnsClient([
-	'version' => 'latest'
+	'version' => 'latest',
 	'region' =>  'us-east-1'
 ]);
 
