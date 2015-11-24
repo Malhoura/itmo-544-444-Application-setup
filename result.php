@@ -98,7 +98,6 @@ $raws3url = $url;
 $filename = basename($_FILES['userfile']['name']);
 $finisheds3url = "none";
 $state=0;
-
 $stmt->bind_param("ssssssi",$username,$useremail,$telephone,$raws3url,$finisheds3url,$filename,$state);
 if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
