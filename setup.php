@@ -17,7 +17,8 @@ $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
 print "============\n". $endpoint . "================\n";
 $link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb") or die("Error " . mysqli_error($link)); 
 
-echo "Here is the result: " . $link;    
+ini-set('error_reporting', E_ALL);
+echo "Here is the result: " . mysql_error($link);    
 
 $sql = "DROP TABLE IF EXISTS User";
 if(!mysqli_query($link, $sql)) {

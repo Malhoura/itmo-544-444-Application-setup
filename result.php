@@ -85,23 +85,6 @@ else {
 echo "Success"; 
 } 
 
-$sns = new Aws\Sns\SnsClient([
-	'version' => 'latest',
-	'region' =>  'us-east-1'
-]);
-
-$snsresult = $sns->listTopics(arra(
-
-));
-
-foreach($snsresult['Topics'] as $key => $value){
-
-if (preg_match("/mp2/", $result['Topics'][$key]['TopicArn])){
-$topicARN = $snsresult['Topics'][$key]['TopicArn'];
-echo"This is my TopicARN: ";
-echo $topicARN;
-}
-}
 
 
 if (!($stmt = $link->prepare("INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state) VALUES (?,?,?,?,?,?,?)"))) {
@@ -128,11 +111,6 @@ $stmt->close();
 $link->real_query("SELECT * FROM User");
 $res = $link->use_result();
 
-$publish = $sns->publish(array(
-	'TopicArn' => $topicARN,
-	'Subject' => 'Image upload notification',
-	'Message' => 'Image Uploaded'
-));
 
 echo "Result set order...\n";
 
@@ -142,5 +120,4 @@ while ($row = $res->fetch_assoc()) {
 $link->close();
 
 $url = "gallery.php";
-header('Location: '. $url, true);
 ?> 
