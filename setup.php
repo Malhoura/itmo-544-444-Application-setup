@@ -11,14 +11,13 @@ $result = $rds->describeDBInstances(array(
     'DBInstanceIdentifier' => 'malhoura-mp1'
 ));
 
+$rds->waitUntil('DBInstanceAvailable',['DBInstanceIdentifier' => 'malhoura-mp1',]);
 
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
 print "============\n". $endpoint . "================\n";
-$link = new mysqli($endpoint,"malhoura","malhoura","malhouradb",3306) or die("Error " . mysqli_error($link)); 
+$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb") or die("Error " . mysqli_error($link)); 
 
-while ($row = $result->fetch_assoc()) {
 echo "Here is the result: " . $link;    
-}
 
 $sql = "DROP TABLE IF EXISTS User";
 if(!mysqli_query($link, $sql)) {
@@ -35,7 +34,7 @@ raws3url VARCHAR(256),
 finisheds3url VARCHAR(256),
 filename VARCHAR(256),
 state TINYINT(3),
-datetime timestamp 
+datetime TIMESTAMP 
 )");
 
 shell-exec("chmod 600 setup.php");
