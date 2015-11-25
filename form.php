@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,6 +26,16 @@
 	$userfile= "";
 
             
+
+	function validate($input) {
+	$input = trim($input);
+	$input = htmlspecialchars($input);
+	return $input;
+}
+
+
+	
+	if ($_SERVER["REQUEST_METHOD"] == "POST"]{
 	//form validation
 
             //if users don't enter their firstname
@@ -34,7 +43,7 @@
                 $wrongusername = "User Name is required";
                 //validate the user input
             } else {
-                $username = $_POST["username"];
+                $username = validate($_POST["username"]);
                 if (!preg_match("/^[a-zA-Z ]*$/", $username)) {
                     $wrongusername = "Only letters and white space allowed";
                 }
@@ -48,7 +57,7 @@
             }
            //validate the user input
             else {
-                $useremail = $_POST["emailAddress"];
+                $useremail = validate($_POST["emailAddress"]);
                 }
 	
 if (empty($_POST["telephone"])) {
@@ -59,7 +68,7 @@ if (empty($_POST["telephone"])) {
                 $telephone = $_POST["telephone"];
                 }
        
-
+}
 	
       
 ?>
