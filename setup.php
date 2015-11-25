@@ -27,7 +27,7 @@ raws3url VARCHAR(256),
 finisheds3url VARCHAR(256),
 filename VARCHAR(256),
 state TINYINT(3),
-datetime TIMESTAMP
+datetime VARCHAR(256) 
 )";
 $link->query($sql);
 

@@ -1,22 +1,7 @@
 <?php
 echo "Hello World1";
+date_default_timezone_set('America/Chicago');
 session_start();
-
-var_dump($_POST);
-if(!empty($_POST)){
-echo $_POST['useremail'];
-echo $_POST['telephone'];
-echo $_POST['username'];
-$_SESSION['username']=$_POST['username'];
-$_SESSION['telephone']=$_POST['telephone'];
-$_SESSION['useremail']=$_POST['useremail'];
-}
-else
-{
-echo "post empty";
-}
-
-
 
 $uploaddir = '/tmp/';
 $uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
@@ -87,7 +72,7 @@ echo "Success";
 
 
 
-if (!($stmt = $link->prepare("INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state) VALUES (?,?,?,?,?,?,?)"))) {
+if (!($stmt = $link->prepare("INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state,datetime) VALUES (?,?,?,?,?,?,?,?)"))) {
     echo "Prepare failed: (" . $link->errno . ") " . $link->error;
 }
 
@@ -98,7 +83,9 @@ $raws3url = $url;
 $filename = basename($_FILES['userfile']['name']);
 $finisheds3url = "none";
 $state=0;
-$stmt->bind_param("ssssssi",$username,$useremail,$telephone,$raws3url,$finisheds3url,$filename,$state);
+$datetime = date("d M Y - h:i:s A");
+
+$stmt->bind_param("ssssssis",$username,$useremail,$telephone,$raws3url,$finisheds3url,$filename,$state,$datetime);
 if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
@@ -119,4 +106,5 @@ while ($row = $res->fetch_assoc()) {
 $link->close();
 
 $url = "gallery.php";
+header("Location: gallery.php");
 ?> 
