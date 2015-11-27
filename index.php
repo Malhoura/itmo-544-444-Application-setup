@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,13 +24,13 @@
 
 
                     <label>User Name</label>
-             <input type="text" class="input-xlarge" name="username" value="<?php echo $username; ?>">
+             <input type="text" class="input-xlarge" name="username" value="name">
                     <br>
                 <label>Email Address</label>
-           <input type="text" class="input-xlarge" name="useremail" value="<?php echo $useremail; ?>">
+           <input type="text" class="input-xlarge" name="useremail" value="foo@foo.com">
                     <br>
                 <label>Telephone Number</label>
-         <input type="number" class="input-xlarge" name="telephone" value="<?php echo $telephone; ?>">
+         <input type="phone" class="input-xlarge" name="telephone" value="03128885475">
                     <br>
 
                         <input type="submit" name="submit" value="Submit">
@@ -38,7 +41,7 @@
 <hr>
                 <form enctype="multipart/form-data" action="gallery.php" method="GET">
 
-                Enter Email of user for gallery to browse: <input type="email" name="useremail">
+                Enter Email of user for gallery to browse: <input type="email" name="useremail" value="foo@foo.com">
                 <input type="submit" value="Load Gallery" />
                 </form>
                 <hr>
