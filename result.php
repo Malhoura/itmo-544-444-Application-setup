@@ -120,9 +120,16 @@ $result = $sns->createTopic([
 
 $snsarn = $result['TopicArn'];
 
+$result = $sns->subscribe([
+	'Endpoint' => $telephone,
+	'Protocol' => 'sms',
+	'TopicArn' => $snsarn,
+]); 
+
 $result = $sns->publish([
+	'TopicArn' => $snsarn,
 	'Message' => 'Image Uploaded',
-        'TopicArn' => $snsarn,
+	'Subject' => 'Image Upload',
 ]);
 
 	
