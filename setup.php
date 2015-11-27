@@ -7,7 +7,7 @@ $client = RdsClient::factory(array(
     'region'  => 'us-east-1'
 ));
 
-// Create a table 
+// Create DB Instance 
 $result = $client->describeDBInstances(array(
     'DBInstanceIdentifier' => 'malhoura-mp1'
 ));
