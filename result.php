@@ -1,7 +1,11 @@
 <?php
-echo "Hello World1";
-date_default_timezone_set('America/Chicago');
 session_start();
+require 'vendor/autoload.php';
+$useremail = $_POST["useremail"]; 
+$telephone = $_POST["telephone"];
+$userfile = $_FILES["userfile"];
+$username = $_POST["username"];
+
 
 $uploaddir = '/tmp/';
 $uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
@@ -18,7 +22,6 @@ echo 'Here is some more debugging info:';
 print_r($_FILES);
 print "</pre>";
   
-require 'vendor/autoload.php';
 
 $s3 = new Aws\S3\S3Client([
     'version' => 'latest',
@@ -60,7 +63,7 @@ $result = $rds->describeDBInstances(array(
 
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
     echo "============\n". $endpoint . "================";
-$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb",3306) or die("Error" . mysql_error($link));
+$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb") or die("Error" . mysql_error($link));
 
 if (mysqli_connect_errno()) { 
     printf("Connect failed: %s\n", mysqli_connect_error()); 
@@ -106,5 +109,6 @@ while ($row = $res->fetch_assoc()) {
 $link->close();
 
 $url = "gallery.php";
-header("Location: gallery.php");
+header("Location:gallery.php");
+exit;
 ?> 
