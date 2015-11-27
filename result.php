@@ -11,7 +11,13 @@ $uploaddir = '/tmp/';
 $uploadthumb = '/tmp/thump/';
 $uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
 $uploadthumb = $uploadthumb . basename($FILES['userfile']['name'];
-print '<pre>';
+move_uploaded_file($userfile["tmp_name"],$uploadfile);
+
+var_dump($userfile);
+$imagick = new \Imagick(realpath($uploadfile));
+$imagick -> thumbnailImage(100, 100, true, true);
+$imagick -> writeImage($uploadthumb);
+
 
 if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
   echo "File is valid, and was successfully uploaded.\n";
@@ -42,48 +48,50 @@ $client->waitUntil('BucketExists',[
 	'Bucket' => $bucket
 ]);
 
-$result = $client->putObject([
+$result = $client->putObject(array(
     'ACL' => 'public-read',
     'Bucket' => $bucket,
    'Key' => $userfile["name'],
    'SourceFile' => $uploadfile 
-]);
+));
 
 $url = $result['ObjectURL'];
 echo $url;
 
-$result = $client->putObject([
+$result = $client->putObject(array(
     'ACL' => 'public-read',
     'Bucket' => $bucket,
    'Key' => $userfile["name'],
    'SourceFile' => $uploadthumb
-]);
+));
 
 $url_thumb = $result['ObjectURL'];
 echo $url_thumb;
 
-
-$rds = new Aws\Rds\RdsClient([
+use Aws\Rds\RdsClient;
+$client = RdsClient::factory(array(
     'version' => 'latest',
     'region'  => 'us-east-1'
-]);
+));
 
-$result = $rds->describeDBInstances(array(
+$result = $client->describeDBInstances(array(
     'DBInstanceIdentifier' => 'malhoura-mp1'
    
 ));
 
+$endpoint= "";
+foreach ($result["DBInstances"] as $dbinstances) {
+$dbinstanceidentifier = $dbinstance["DBInstanceIdentifier"];
+if ($dbinstanceidentifier == "malhoura-mp1"){
+$endpoint = $dbinstance["Endpoint"]["Address"];
+}
+}
+
+$link = mysqli_connect($endpoint,"malhoura","malhoura") or die("Error " . mysqli_error($link));
 $endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
     echo "============\n". $endpoint . "================";
-$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb") or die("Error" . mysql_error($link));
 
-if (mysqli_connect_errno()) { 
-    printf("Connect failed: %s\n", mysqli_connect_error()); 
-    exit(); 
-} 
-else { 
-echo "Success"; 
-} 
+$sql = "INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state,datetime) VALUES ($username,$useremail,?,?,?,?,?,?)";
 
 
 
