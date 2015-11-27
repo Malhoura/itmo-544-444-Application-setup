@@ -5,42 +5,40 @@
 <div>
 <?php
 session_start();
-
-$useremail = $_POST["useremail"];
+require 'vendor/autoload.php';
+use Aws\Rds\RdsClient;
+$useremail = $_GET["useremail"];
 echo $useremail;
 
-require 'vendor/autoload.php';
 
-$rds = new Aws\Rds\RdsClient([
+$client = RdsClient::factory(array(
     'version' => 'latest',
     'region'  => 'us-east-1'
-]);
+));
 
-$result = $rds->describeDBInstances(array(
+$result = $client->describeDBInstances(array(
     'DBInstanceIdentifier' => 'malhoura-mp1'
    
 ));
 
-$endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
-    echo "============\n". $endpoint . "================";
-$link = mysqli_connect($endpoint,"malhoura","malhoura","malhouradb");
-if (mysqli_connect_errno()) {
-    printf("Connect failed: %s\n", mysqli_connect_error());
-    exit();
+$endpoint= "";
+foreach ($result["DBInstances"] as $dbinstances) {
+$dbinstanceidentifier = $dbinstance["DBInstanceIdentifier"];
+if ($dbinstanceidentifier == "malhoura-mp1"){
+$endpoint = $dbinstance["Endpoint"]["Address"];
 }
-else {
-echo "Success";
 }
-$link->real_query("SELECT * FROM User");
-echo "Result set order...\n";
 
-if ($result = $link->use_result()) {
+$link = mysqli_connect($endpoint,"malhoura","malhoura") or die("Error " . mysqli_error($link));
+mysqli_select_db($link, "malhouradb");
+$sql = "SELECT * FROM User WHERE useremail='$useremail'";
+$result = $link->query($sql);
+
+
             while ($row = $result->fetch_assoc()) {
                 echo "<img src =\" " . $row['raws3url'] . "\" height='200' width='200' />";
             }
-            $result->close();
-        }
-session_destroy();
+            $link->close();
 
 ?>
 
