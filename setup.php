@@ -28,11 +28,10 @@ $link->query($db);
 
 mysqli_select_db($link, "malhouradb");
 
-$sql = "CREATE TABLE User IF NOT EXISTS(
+$sql = "CREATE TABLE User(
 ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 username VARCHAR(20),
 useremail VARCHAR(20),
-sns VARCHAR(20),
 telephone VARCHAR(20),
 raws3url VARCHAR(256),
 finisheds3url VARCHAR(256),
