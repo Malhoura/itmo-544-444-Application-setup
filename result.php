@@ -8,7 +8,9 @@ $username = $_POST["username"];
 
 
 $uploaddir = '/tmp/';
+$uploadthumb = '/tmp/thump/';
 $uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
+$uploadthumb = $uploadthumb . basename($FILES['userfile']['name'];
 print '<pre>';
 
 if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
@@ -22,33 +24,43 @@ echo 'Here is some more debugging info:';
 print_r($_FILES);
 print "</pre>";
   
-
-$s3 = new Aws\S3\S3Client([
-    'version' => 'latest',
-    'region'  => 'us-east-1'
-]);
+use Aws\S3\S3Client;
+$client = S3Client::factory(array(
+	'version' => 'latest',
+	'region' => 'us-east-1',
+));
 
 $bucket = uniqid("malhoura-php",false);
 
 # AWS PHP SDK version 3 create bucket
-$result = $s3->createBucket([
+$result = $client->createBucket(array(
     'ACL' => 'public-read',
     'Bucket' => $bucket
-]);
+));
 
-$s3->waitUntil('BucketExists',[
+$client->waitUntil('BucketExists',[
 	'Bucket' => $bucket
 ]);
 
-$result = $s3->putObject([
+$result = $client->putObject([
     'ACL' => 'public-read',
     'Bucket' => $bucket,
-   'Key' => $bucket,
+   'Key' => $userfile["name'],
    'SourceFile' => $uploadfile 
 ]);
 
 $url = $result['ObjectURL'];
 echo $url;
+
+$result = $client->putObject([
+    'ACL' => 'public-read',
+    'Bucket' => $bucket,
+   'Key' => $userfile["name'],
+   'SourceFile' => $uploadthumb
+]);
+
+$url_thumb = $result['ObjectURL'];
+echo $url_thumb;
 
 
 $rds = new Aws\Rds\RdsClient([
