@@ -9,8 +9,8 @@ $username = $_POST["username"];
 
 $uploaddir = '/tmp/';
 $uploadthumb = '/tmp/thump/';
-$uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
-$uploadthumb = $uploadthumb . basename($FILES['userfile']['name'];
+$uploadfile = $uploaddir . basename($_FILES["userfile"]["name"]);
+$uploadthumb = $uploadthumb . basename($FILES["userfile"]["name"];
 move_uploaded_file($userfile["tmp_name"],$uploadfile);
 
 var_dump($userfile);
@@ -36,7 +36,7 @@ $client = S3Client::factory(array(
 	'region' => 'us-east-1',
 ));
 
-$bucket = uniqid("malhoura-php",false);
+$bucket = uniqid("malhoura-php",true);
 
 # AWS PHP SDK version 3 create bucket
 $result = $client->createBucket(array(
@@ -51,21 +51,21 @@ $client->waitUntil('BucketExists',[
 $result = $client->putObject(array(
     'ACL' => 'public-read',
     'Bucket' => $bucket,
-   'Key' => $userfile["name'],
+   'Key' => $userfile["name"],
    'SourceFile' => $uploadfile 
 ));
 
-$url = $result['ObjectURL'];
+$url = $result["ObjectURL"];
 echo $url;
 
 $result = $client->putObject(array(
     'ACL' => 'public-read',
     'Bucket' => $bucket,
-   'Key' => $userfile["name'],
+   'Key' => $userfile["name"],
    'SourceFile' => $uploadthumb
 ));
 
-$url_thumb = $result['ObjectURL'];
+$url_thumb = $result["ObjectURL"];
 echo $url_thumb;
 
 use Aws\Rds\RdsClient;
@@ -88,45 +88,12 @@ $endpoint = $dbinstance["Endpoint"]["Address"];
 }
 
 $link = mysqli_connect($endpoint,"malhoura","malhoura") or die("Error " . mysqli_error($link));
-$endpoint = $result['DBInstances'][0]['Endpoint']['Address'];
-    echo "============\n". $endpoint . "================";
 
-$sql = "INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state,datetime) VALUES ($username,$useremail,?,?,?,?,?,?)";
+$sql = "INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state,datetime) VALUES ('".$username."','".$useremail."','".$telephone>"','".$url."','".$url_thumb."','".$userfile["name"]."','2','NOW()')";
 
-
-
-if (!($stmt = $link->prepare("INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state,datetime) VALUES (?,?,?,?,?,?,?,?)"))) {
-    echo "Prepare failed: (" . $link->errno . ") " . $link->error;
-}
-
-$username=$_POST['username'];
-$useremail = $_POST['useremail'];
-$telephone = $_POST['telephone'];
-$raws3url = $url; 
-$filename = basename($_FILES['userfile']['name']);
-$finisheds3url = "none";
-$state=0;
-$datetime = date("d M Y - h:i:s A");
-
-$stmt->bind_param("ssssssis",$username,$useremail,$telephone,$raws3url,$finisheds3url,$filename,$state,$datetime);
-if (!$stmt->execute()) {
-    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-}
-
-printf("%d Row inserted.\n", $stmt->affected_rows);
-$stmt->close();
-
-
-$link->real_query("SELECT * FROM User");
-$res = $link->use_result();
-
-
-echo "Result set order...\n";
-
-while ($row = $res->fetch_assoc()) {
-    echo $row['id'] . " " . $row['username'] . " " . $row['useremail']. " " . $row['telephone'];
-}
+$link->query($sql);
 $link->close();
+
 
 use Aws\SnsClient;
 $sns = SnsClient::factory(array(
