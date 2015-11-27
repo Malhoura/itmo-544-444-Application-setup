@@ -108,7 +108,26 @@ while ($row = $res->fetch_assoc()) {
 }
 $link->close();
 
-$url = "gallery.php";
+use Aws\SnsClient;
+$sns = SnsClient::factory(array(
+	'version' => 'latest',
+	'region' => 'us-east-1',
+]);
+
+$result = $sns->createTopic([
+	'Name => 'mp2',
+]);
+
+$snsarn = $result['TopicArn'];
+
+$result = $sns->publish([
+	'Message' => 'Image Uploaded',
+        'TopicArn' => $snsarn,
+]);
+
+	
+$_SESSION["uploader"] = true;
+
 header("Location:gallery.php");
 exit;
 ?> 
