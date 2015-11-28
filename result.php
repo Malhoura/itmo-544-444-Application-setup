@@ -102,7 +102,7 @@ $sns = SnsClient::factory(array(
 ));
 
 $result = $sns->createTopic([
-	'Name => 'mp2',
+	'Name' => 'mp2',
 ]);
 
 $snsarn = $result['TopicArn'];
