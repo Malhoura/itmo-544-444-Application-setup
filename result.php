@@ -10,7 +10,7 @@ $username = $_POST["username"];
 $uploaddir = '/tmp/';
 $uploadthumb = '/tmp/thump/';
 $uploadfile = $uploaddir . basename($_FILES["userfile"]["name"]);
-$uploadthumb = $uploadthumb . basename($FILES["userfile"]["name"];
+$uploadthumb = $uploadthumb . basename($_FILES["userfile"]["name"]);
 move_uploaded_file($userfile["tmp_name"],$uploadfile);
 
 var_dump($userfile);
