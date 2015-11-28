@@ -99,7 +99,7 @@ use Aws\SnsClient;
 $sns = SnsClient::factory(array(
 	'version' => 'latest',
 	'region' => 'us-east-1',
-]);
+));
 
 $result = $sns->createTopic([
 	'Name => 'mp2',
