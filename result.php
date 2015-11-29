@@ -8,17 +8,15 @@ $userfile = $_FILES["userfile"];
 $username = $_POST["username"];
 
 
-$uploaddir = '/tmp/';
-$uploadthumb = '/tmp/thump/';
-$uploadfile = $uploaddir . basename($_FILES["userfile"]["name"]);
-$uploadthumb = $uploadthumb . basename($_FILES["userfile"]["name"]);
-move_uploaded_file($userfile["tmp_name"],$uploadfile);
+$uploaddir = "/var/www/html/uploads/".$userfile["name"];
+$uploadthumb = "/var/www/html/uploads/thumb_".$userfile["name"];
+
+move_uploaded_file($userfile["tmp_name"],$uploaddir);
 
 var_dump($userfile);
-$imagick = new \Imagick(realpath($uploadfile));
+$imagick = new \Imagick(realpath($uploaddir));
 $imagick -> thumbnailImage(100, 100, true, true);
 $imagick -> writeImage($uploadthumb);
-
 
 
   
@@ -43,7 +41,7 @@ $result = $client->putObject(array(
     'ACL' => 'public-read',
     'Bucket' => $bucket,
    'Key' => $userfile["name"],
-   'SourceFile' => $uploadfile 
+   'SourceFile' => $uploaddir 
 ));
 
 $url = $result["ObjectURL"];
