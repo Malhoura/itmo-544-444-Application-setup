@@ -90,6 +90,8 @@ $sns = SnsClient::factory(array(
 	'region' => 'us-east-1',
 ));
 
+snsClient.setRegion(Region.getRegion(Regions.US_EAST_1));
+
 $result = $sns->createTopic([
 	'Name' => 'mp2',
 ]);
