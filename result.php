@@ -78,7 +78,7 @@ $endpoint = $dbinstances["Endpoint"]["Address"];
 
 $link = mysqli_connect($endpoint,"malhoura","malhoura") or die("Error " . mysqli_error($link));
 
-$sql = "INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state,datetime) VALUES ('.$username.','.$useremail.','.$telephone','.$url.','.$url_thumb.','.$userfile["name"].','2','NOW()')";
+$sql = "INSERT INTO User (username,useremail,telephone,raws3url,finisheds3url,filename,state,datetime) VALUES('.$username.','.$useremail.','.$telephone','.$url.','.$url_thumb.','.$userfile["name"].','2','NOW()')";
 
 $link->query($sql);
 $link->close();
