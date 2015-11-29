@@ -17,7 +17,7 @@ var_dump($userfile);
 $imagick = new Imagick(realpath($uploaddir));
 $imagick -> setImageFormat("png24");
 $imagick -> thumbnailImage(100, 100, true, true);
-$imagick -> writeImage($uploadthumb);
+$imagick -> writeImage(realpath($uploadthumb));
 
 
   
