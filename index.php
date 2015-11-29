@@ -24,13 +24,13 @@ session_start();
 
 
                     <label>User Name</label>
-             <input type="text" class="input-xlarge" name="username" value="name">
+             <input type="text" class="input-xlarge" name="username" value="mazen">
                     <br>
                 <label>Email Address</label>
-           <input type="text" class="input-xlarge" name="useremail" value="foo@foo.com">
+           <input type="text" class="input-xlarge" name="useremail" value="malhoura@hawk.iit.edu">
                     <br>
                 <label>Telephone Number</label>
-         <input type="phone" class="input-xlarge" name="telephone" value="03128885475">
+         <input type="phone" class="input-xlarge" name="telephone" value="13128885475">
                     <br>
 
                         <input type="submit" name="submit" value="Submit">
@@ -39,12 +39,13 @@ session_start();
 
 
 <hr>
+		<div id="form" align ='center' >
                 <form enctype="multipart/form-data" action="gallery.php" method="GET">
 
-                Enter Email of user for gallery to browse: <input type="email" name="useremail" value="foo@foo.com">
+                Enter Email of user for gallery to browse: <input type="email" name="useremail" value="malhoura@hawk.iit.edu">
                 <input type="submit" value="Load Gallery" />
                 </form>
-                <hr>
+                </div>
 
 </body>
 </html>
