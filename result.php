@@ -70,7 +70,7 @@ $result = $client->describeDBInstances(array(
 
 $endpoint= "";
 foreach ($result["DBInstances"] as $dbinstances) {
-$dbinstanceidentifier = $dbinstance["DBInstanceIdentifier"];
+$dbinstanceidentifier = $dbinstances["DBInstanceIdentifier"];
 if ($dbinstanceidentifier == "malhoura-mp1"){
 $endpoint = $dbinstance["Endpoint"]["Address"];
 }
