@@ -103,9 +103,9 @@ $result = $sns->subscribe([
 ]); 
 
 $result = $sns->publish([
-	'TopicArn' => $snsarn,
 	'Message' => 'Image Uploaded',
 	'Subject' => 'Image Upload',
+	'TopicArn' => $snsarn
 ]);
 
 	
