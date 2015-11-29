@@ -39,11 +39,12 @@ $sql = "SELECT * FROM User WHERE useremail='$useremail'";
 $result = $link->query($sql);
 
 		while ($row = $result->fetch_assoc()) {
-			if($_SESSION["uploader"]){
-		echo "<p>Before: <img src =\" " . $row['raw_s3_url'] . "\" /><br/>
+		if($_SESSION["uploader"]){
+		echo "<p>Before: <img src =\" " . $row['raws3url'] . "\" /><br/>
+			After: <img src =\" " . $row['finisheds3url'] . "\" /><br/></p>";
 		}else{
-	    	echo "<p><img src =\" " . $row['raw_s3_url'] . "\" /><br/></p>";
-			}
+	   	echo "<p><img src =\" " . $row['raw_s3_url'] . "\" /><br/></p>";
+		}
 		}
 		$link->close();	
 
