@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'vendor/autoload.php';
+use Aws\S3\S3Client;
 $useremail = $_POST["useremail"]; 
 $telephone = $_POST["telephone"];
 $userfile = $_FILES["userfile"];
@@ -19,18 +20,8 @@ $imagick -> thumbnailImage(100, 100, true, true);
 $imagick -> writeImage($uploadthumb);
 
 
-if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-  echo "File is valid, and was successfully uploaded.\n";
-}
-else {
-    echo "Possible file upload attack!\n";
-}
 
-echo 'Here is some more debugging info:';
-print_r($_FILES);
-print "</pre>";
   
-use Aws\S3\S3Client;
 $client = S3Client::factory(array(
 	'version' => 'latest',
 	'region' => 'us-east-1',
