@@ -14,7 +14,8 @@ $uploadthumb = "/var/www/html/uploads/thumb_".$userfile["name"];
 move_uploaded_file($userfile["tmp_name"],$uploaddir);
 
 var_dump($userfile);
-$imagick = new \Imagick(realpath($uploaddir));
+$imagick = new Imagick(realpath($uploaddir));
+$imagick -> setImageFormat("png24");
 $imagick -> thumbnailImage(100, 100, true, true);
 $imagick -> writeImage($uploadthumb);
 
