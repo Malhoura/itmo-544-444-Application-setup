@@ -84,7 +84,7 @@ $link->query($sql);
 $link->close();
 
 
-use Aws\SnsClient;
+use Aws\Sns\SnsClient;
 $sns = SnsClient::factory(array(
 	'version' => 'latest',
 	'region' => 'us-east-1',
