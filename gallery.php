@@ -2,7 +2,7 @@
 session_start();
 require 'vendor/autoload.php';
 use Aws\Rds\RdsClient;
-$useremail = $_POST["useremail"];
+$useremail = $_GET["useremail"];
 echo $useremail;
 
 
