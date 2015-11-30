@@ -40,7 +40,7 @@ session_start();
 
 <hr>
 		<div id="form" align ='center' >
-                <form enctype="multipart/form-data" action="gallery.php" method="GET">
+                <form enctype="multipart/form-data" action="gallery.php" method="POST">
 
                 Enter Email of user for gallery to browse: <input type="email" name="useremail" value="malhoura@hawk.iit.edu">
                 <input type="submit" value="Load Gallery" />
