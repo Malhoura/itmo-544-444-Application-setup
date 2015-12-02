@@ -95,6 +95,12 @@ $result = $sns->createTopic([
 	'Name' => 'mp2',
 ]);
 
+$topicAttributes = $sns->setTopicAttributes([
+	'AttributeName' => 'DisplayName',
+	'AttributeValue' => 'mp2-display',
+	'TopicArn' => $result['TopicArn']
+])
+
 $snsarn = $result['TopicArn'];
 
 $result = $sns->subscribe([
