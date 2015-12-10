@@ -14,8 +14,8 @@ $uploadthumb = "/var/www/html/uploads/thumb_".$userfile["name"];
 move_uploaded_file($userfile["tmp_name"],$uploaddir);
 
 var_dump($userfile);
-$imagick = new Imagick($uploaddir);
-$imagick -> thumbnailImage(100, 100);
+$imagick = new \Imagick(realpath($uploaddir));
+$imagick -> thumbnailImage(100, 100, true, true);
 $imagick -> writeImage($uploadthumb);
 
 
@@ -78,7 +78,7 @@ $endpoint = $dbinstances["Endpoint"]["Address"];
 
 $link = mysqli_connect($endpoint,"malhoura","malhoura") or die("Error " . mysqli_error($link));
 
-$sql = "INSERT INTO User (username, useremail, telephone, raws3url, filename, state, datetime) VALUES('".$username."','".$useremail."','".$telephone."','".$url."','".$userfile["name"]."','2','NOW()')";
+$sql = "INSERT INTO User (username, useremail, telephone, raws3url, finisheds3url, filename, state, datetime) VALUES('".$username."','".$useremail."','".$telephone."','".$url."','".$url_thumb."','".$userfile["name"]."','2','NOW()')";
 
 $link->query($sql);
 $link->close();
@@ -118,6 +118,6 @@ $result = $sns->publish([
 	
 $_SESSION["uploader"] = true;
 
-header("Location:gallery.php");
+header("Location:gallery.php?useremail=".$useremail);
 exit;
 ?> 

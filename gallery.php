@@ -35,6 +35,8 @@ $endpoint = $dbinstances["Endpoint"]["Address"];
 <?php
 $link = mysqli_connect($endpoint,"malhoura","malhoura") or die("Error " . mysqli_error($link));
 mysqli_select_db($link, "malhouradb");
+
+
 $sql = "SELECT * FROM User WHERE useremail='$useremail'";
 $result = $link->query($sql);
 
@@ -43,7 +45,7 @@ $result = $link->query($sql);
 		echo "<p>Before: <img src =\" " . $row['raws3url'] . "\" /><br/>
 			After: <img src =\" " . $row['finisheds3url'] . "\" /><br/></p>";
 		}else{
-	   	echo "<p><img src =\" " . $row['raw_s3_url'] . "\" /><br/></p>";
+	   	echo "<p><img src =\" " . $row['raws3url'] . "\" /><br/></p>";
 		}
 		}
 		$link->close();	
