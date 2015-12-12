@@ -13,11 +13,30 @@ $uploadthumb = "/var/www/html/uploads/thumb_".$userfile["name"];
 
 move_uploaded_file($userfile["tmp_name"],$uploaddir);
 
-var_dump($userfile);
-$imagick = new \Imagick(realpath($uploaddir));
-$imagick -> thumbnailImage(100, 100, true, true);
-$imagick -> writeImage($uploadthumb);
-
+$image = @file_get_contents($uploadfile);
+echo "got image contents";
+if($image) {
+    $im = new Imagick();
+    echo $im;
+    $im->readImageBlob($image);
+    $im->setImageFormat("png24");
+    $geo=$im->getImageGeometry();
+    $width=$geo['width'];
+    $height=$geo['height'];
+        echo $height. $width;
+    if($width > $height)
+    {
+        $scale = ($width > 200) ? 200/$width : 1;
+    }
+    else
+    {
+        $scale = ($height > 200) ? 200/$height : 1;
+    }
+    $newWidth = $scale*$width;
+    $newHeight = $scale*$height;
+ echo $newWidth.$newHeight;
+    $im->setImageCompressionQuality(85);
+    $im->resizeImage($newWidth,$newHeight,Imagick::FILTER_LANCZOS,1.1);
 
   
 $client = S3Client::factory(array(
@@ -25,7 +44,7 @@ $client = S3Client::factory(array(
 	'region' => 'us-east-1',
 ));
 
-$bucket = uniqid("malhoura-php",true);
+$bucket = uniqid("malhoura-php",false);
 
 # AWS PHP SDK version 3 create bucket
 $result = $client->createBucket(array(
