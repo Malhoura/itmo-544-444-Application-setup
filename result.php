@@ -3,6 +3,7 @@ session_start();
 require 'vendor/autoload.php';
 use Aws\S3\S3Client;
 use Aws\Rds\RdsClient;
+use Aws\Sns\SnsClient;
 $useremail = $_POST["useremail"]; 
 $telephone = $_POST["telephone"];
 $userfile = $_FILES["userfile"];
@@ -103,7 +104,6 @@ $link->query($sql);
 $link->close();
 
 
-use Aws\Sns\SnsClient;
 $sns = SnsClient::factory(array(
 	'version' => 'latest',
 	'region' => 'us-east-1',
