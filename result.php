@@ -2,6 +2,7 @@
 session_start();
 require 'vendor/autoload.php';
 use Aws\S3\S3Client;
+use Aws\Rds\RdsClient;
 $useremail = $_POST["useremail"]; 
 $telephone = $_POST["telephone"];
 $userfile = $_FILES["userfile"];
@@ -76,7 +77,6 @@ $result = $client->putObject(array(
 $url_thumb = $result["ObjectURL"];
 echo $url_thumb;
 
-use Aws\Rds\RdsClient;
 $client = RdsClient::factory(array(
     'version' => 'latest',
     'region'  => 'us-east-1'
