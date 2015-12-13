@@ -2,8 +2,6 @@
 session_start();
 require 'vendor/autoload.php';
 use Aws\S3\S3Client;
-use Aws\Rds\RdsClient;
-use Aws\Sns\SnsClient;
 $useremail = $_POST["useremail"]; 
 $telephone = $_POST["telephone"];
 $userfile = $_FILES["userfile"];
@@ -14,6 +12,8 @@ $uploaddir = "/var/www/html/uploads/".$userfile["name"];
 $uploadthumb = "/var/www/html/uploads/thumb_".$userfile["name"];
 
 move_uploaded_file($userfile["tmp_name"],$uploaddir);
+
+var_dump($userfile);
 
 $image = @file_get_contents($uploadfile);
 echo "got image contents";
@@ -78,6 +78,7 @@ $result = $client->putObject(array(
 $url_thumb = $result["ObjectURL"];
 echo $url_thumb;
 
+use Aws\Rds\RdsClient;
 $client = RdsClient::factory(array(
     'version' => 'latest',
     'region'  => 'us-east-1'
@@ -103,7 +104,7 @@ $sql = "INSERT INTO User (username, useremail, telephone, raws3url, finisheds3ur
 $link->query($sql);
 $link->close();
 
-
+use Aws\Sns\SnsClient;
 $sns = SnsClient::factory(array(
 	'version' => 'latest',
 	'region' => 'us-east-1',
@@ -139,4 +140,4 @@ $_SESSION["uploader"] = true;
 
 header("Location:gallery.php?useremail=".$useremail);
 exit;
- 
+?> 
