@@ -105,7 +105,7 @@ $result2 = $client->putBucketLifecycleConfiguration(array(
 $result2 = $client->putObject(array(
     'ACL' => 'public-read',
     'Bucket' => $bucket2,
-   'Key' => $userfile["name"],
+   'Key' => "thumb_".$userfile["name"],
    'SourceFile' => $uploadthumb
 ));
 
