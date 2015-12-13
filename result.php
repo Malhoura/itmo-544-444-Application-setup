@@ -13,6 +13,7 @@ $uploadthumb = "/var/www/html/uploads/thumb_".$userfile["name"];
 
 move_uploaded_file($userfile["tmp_name"],$uploaddir);
 
+$image = @file_get_contents($uploaddir);
 if($image) {
     $im = new Imagick();
     echo $im;
