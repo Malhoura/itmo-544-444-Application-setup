@@ -36,7 +36,7 @@ $client->waitUntil('BucketExists',[
 	'Bucket' => $bucket
 ]);
 
-$result = $s3->putBucketLifecycleConfiguration(array(
+$result = $client->putBucketLifecycleConfiguration(array(
         'Bucket' => $bucket,
         'LifecycleConfiguration' => array(
         'Rules' => array(
@@ -70,7 +70,7 @@ $client->waitUntil('BucketExists',[
         'Bucket' => $bucket2
 ]);
 
-$result2 = $s3->putBucketLifecycleConfiguration(array(
+$result2 = $client->putBucketLifecycleConfiguration(array(
         'Bucket' => $bucket2,
         'LifecycleConfiguration' => array(
         'Rules' => array(
