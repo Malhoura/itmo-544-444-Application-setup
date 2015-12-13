@@ -12,6 +12,7 @@ $uploaddir = "/var/www/html/uploads/".$userfile["name"];
 $uploadthumb = "/var/www/html/uploads/thumb_".$userfile["name"];
 
 move_uploaded_file($userfile["tmp_name"],$uploaddir);
+var_dump($userfile);
 
 $image = @file_get_contents($uploaddir);
 if($image) {
