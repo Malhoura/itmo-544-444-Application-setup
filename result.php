@@ -60,7 +60,7 @@ echo $url;
 
 $bucket2 = uniqid("malhoura-thumb",true);
 //creating a bucket
-$result2 = $s3->createBucket([
+$result2 = $client->createBucket([
     'ACL' => 'public-read',
     'Bucket' => $bucket2
 ]);
