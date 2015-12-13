@@ -15,38 +15,16 @@ move_uploaded_file($userfile["tmp_name"],$uploaddir);
 
 var_dump($userfile);
 
-$image = @file_get_contents($uploadfile);
-echo "got image contents";
-if($image) {
-    $im = new Imagick();
-    echo $im;
-    $im->readImageBlob($image);
-    $im->setImageFormat("png24");
-    $geo=$im->getImageGeometry();
-    $width=$geo['width'];
-    $height=$geo['height'];
-        echo $height. $width;
-    if($width > $height)
-    {
-        $scale = ($width > 200) ? 200/$width : 1;
-    }
-    else
-    {
-        $scale = ($height > 200) ? 200/$height : 1;
-    }
-    $newWidth = $scale*$width;
-    $newHeight = $scale*$height;
- echo $newWidth.$newHeight;
-    $im->setImageCompressionQuality(85);
-    $im->resizeImage($newWidth,$newHeight,Imagick::FILTER_LANCZOS,1.1);
-
+$imagick = new \Imagick(realpath($uploaddir));
+$imagick->thumbnailImage(100, 100, true, true);
+$imagick->writeImage($uploadthumb);
   
 $client = S3Client::factory(array(
 	'version' => 'latest',
 	'region' => 'us-east-1',
 ));
 
-$bucket = uniqid("malhoura-php",false);
+$bucket = uniqid("malhoura-php",true);
 
 # AWS PHP SDK version 3 create bucket
 $result = $client->createBucket(array(
@@ -58,6 +36,18 @@ $client->waitUntil('BucketExists',[
 	'Bucket' => $bucket
 ]);
 
+$result = $s3->putBucketLifecycleConfiguration(array(
+        'Bucket' => $bucket,
+        'LifecycleConfiguration' => array(
+        'Rules' => array(
+                        array(
+                                'Expiration' => array('Days' => 1),
+                                'Prefix' => "",
+                                'Status' => 'Enabled'
+                        )
+        ))
+));
+
 $result = $client->putObject(array(
     'ACL' => 'public-read',
     'Bucket' => $bucket,
@@ -68,14 +58,38 @@ $result = $client->putObject(array(
 $url = $result["ObjectURL"];
 echo $url;
 
-$result = $client->putObject(array(
+$bucket2 = uniqid("malhoura-thumb",true);
+//creating a bucket
+$result2 = $s3->createBucket([
     'ACL' => 'public-read',
-    'Bucket' => $bucket,
+    'Bucket' => $bucket2
+]);
+
+//wait until bucket exists
+$client->waitUntil('BucketExists',[
+        'Bucket' => $bucket2
+]);
+
+$result2 = $s3->putBucketLifecycleConfiguration(array(
+        'Bucket' => $bucket2,
+        'LifecycleConfiguration' => array(
+        'Rules' => array(
+                        array(
+                                'Expiration' => array('Days' => 1),
+                                'Prefix' => "",
+                                'Status' => 'Enabled'
+                        )
+        ))
+));
+
+$result2 = $client->putObject(array(
+    'ACL' => 'public-read',
+    'Bucket' => $bucket2,
    'Key' => $userfile["name"],
    'SourceFile' => $uploadthumb
 ));
 
-$url_thumb = $result["ObjectURL"];
+$url_thumb = $result2["ObjectURL"];
 echo $url_thumb;
 
 use Aws\Rds\RdsClient;
