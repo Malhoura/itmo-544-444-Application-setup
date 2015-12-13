@@ -134,10 +134,33 @@ $endpoint = $dbinstances["Endpoint"]["Address"];
 
 $link = mysqli_connect($endpoint,"malhoura","malhoura") or die("Error " . mysqli_error($link));
 
-$sql = "INSERT INTO User (username, useremail, telephone, raws3url, finisheds3url, filename, state, datetime) VALUES('".$username."','".$useremail."','".$telephone."','".$url."','".$url_thumb."','".$userfile["name"]."','2','NOW()')";
+if (!($stmt = $link->prepare("INSERT INTO User (username, useremail,telephone,raws3url,finisheds3url,filename,state,datetime) VALUES (?,?,?,?,?,?,?,?)"))) {
+    echo "Prepare failed: (" . $link->errno . ") " . $link->error;
+}
+$username = $_POST['uname'];
+$useremail = $_POST['email'];
+$_SESSION["useremail"] = $useremail;
+$telephone = $_POST['telephone'];
+$raws3url = $url; //  $result['ObjectURL']; from above
+$filename = basename($_FILES['file']['name']);
+$finisheds3url = $url_thumb;
+$status =2;
+$date = date("d M Y - h:i:s A");
 
-$link->query($sql);
-$link->close();
+$stmt->bind_param("ssssssis",$username,$useremail,$telephone,$raws3url,$finisheds3url,$filename,$status,$date);
+if (!$stmt->execute()) {
+    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+}
+printf("%d Row inserted.\n", $stmt->affected_rows);
+/* explicit close recommended */
+$stmt->close();
+$link->real_query("SELECT * FROM users");
+$res = $link->use_result();
+echo "Result set order...\n";
+while ($row = $res->fetch_assoc()) {
+    echo $row['id'] . " " . $row['username'] . " " . $row['useremail']. " " . $row['telephone'];
+}
+
 
 use Aws\Sns\SnsClient;
 $sns = SnsClient::factory(array(
